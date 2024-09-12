@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 export const GlobalStyles = createGlobalStyle`
 *{
  box-sizing: border-box;
@@ -24,4 +24,24 @@ body{
   text-align:center;
 }
 
-`
+.type-box{
+  display:block;
+  max-width:1000px;
+  height:140px;
+  margin-left:auto;
+  margin-right:auto;
+  overflow:hidden
+}
+
+.words{
+display:flex;
+  flex-wrap:wrap;
+  font-size:32px;
+  
+}
+
+.word{
+  margin:2px;
+  padding-right:2px;
+}
+`;
