@@ -62,6 +62,20 @@ opacity:0;
     75% {border-left-color:black;}
     100% {border-left-color:white;}
   }
+  
+  .current-right{
+  border-right:1px solid;
+  animation: blinkingRI 2s infinite;
+  animation-timing-function:ease;
+}
+
+  @keyframes blinkingRI{
+    0% {border-right-color:white;}
+    25% {border-right-color:black;}
+    50% {border-right-color:white;}
+    75% {border-right-color:black;}
+    100% {border-right-color:white;}
+  }
 
 .correct{
   color:green;
