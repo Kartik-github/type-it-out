@@ -32,11 +32,19 @@ const TypingBox = () => {
       return;
     }
 
+ 
+
     if(e.keyCode === BACKSPACE){
       if(currentCharacterIndex!==0){
 
         if(allCurrChars.length === currentCharacterIndex){
+
+          if(allCurrChars[currentCharacterIndex-1].className.includes('extra')){
+            allCurrChars[currentCharacterIndex-1].remove()
+            allCurrChars[currentCharacterIndex-2].className+=' current-right'
+          }else{
           allCurrChars[currentCharacterIndex-1].className='current';
+          }
           setcurrentCharacterIndex(currentCharacterIndex-1)
           return
         }
@@ -48,6 +56,16 @@ const TypingBox = () => {
       return
     }
 
+    if(currentCharacterIndex === allCurrChars.length){
+      let newSpan = document.createElement('span');
+      newSpan.innerHTML=e.key
+      newSpan.className='incorrect extra current-right'
+      allCurrChars[currentCharacterIndex-1].classList.remove('current-right')
+      wordsSpanRef[currentWordIndex].current.append(newSpan)
+      setcurrentCharacterIndex(currentCharacterIndex+1)
+      return
+
+     }
 
     if (e.key === allCurrChars[currentCharacterIndex].innerText) {
       allCurrChars[currentCharacterIndex].className = "correct"
