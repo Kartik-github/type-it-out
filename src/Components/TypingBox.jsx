@@ -1,13 +1,17 @@
 import React, { useMemo, createRef, useEffect, useRef, useState } from "react";
 import { generate } from "random-words";
+import UpperMenu from "./UpperMenu";
+import { useTestMode } from "../Context/TestModeContext";
 
 const TypingBox = () => {
   const inputRef = useRef(null);
   const [wordsArray, setWordsArray] = useState(() => generate(50));
+  const {testTime} = useTestMode();
   const SPACEBAR = 32;
   const BACKSPACE=8;
   const [currentWordIndex, setcurrentWordIndex] = useState(0);
   const [currentCharacterIndex, setcurrentCharacterIndex] = useState(0);
+  const [countDown,setCountDown] = useState(testTime)
   const wordsSpanRef = useMemo(() => {
     return Array(wordsArray.length)
       .fill(0)
@@ -90,8 +94,14 @@ const TypingBox = () => {
     //set cursor to first character
     wordsSpanRef[0].current.childNodes[0].className = "current";
   }, []);
+
+  useEffect(()=>{
+    setCountDown(testTime);
+  },[testTime])
+
   return (
     <div>
+      <UpperMenu countDown={countDown}/>
       <div className="type-box" onClick={focusInput}>
         <div className="words">
           {wordsArray.map((words, index) => (
