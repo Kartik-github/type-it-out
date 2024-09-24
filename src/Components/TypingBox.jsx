@@ -10,15 +10,62 @@ const TypingBox = () => {
   const SPACEBAR = 32;
   const BACKSPACE=8;
   const [currentWordIndex, setcurrentWordIndex] = useState(0);
+  const [intervalId,setIntervalId] = useState(null);
   const [currentCharacterIndex, setcurrentCharacterIndex] = useState(0);
   const [countDown,setCountDown] = useState(testTime)
+  const [testStart,setTestStart] = useState(false);
+  const [testEnd,setTestEnd] = useState(false);
+
+
   const wordsSpanRef = useMemo(() => {
     return Array(wordsArray.length)
       .fill(0)
       .map((i) => createRef(null));
   }, [wordsArray]);
 
+
+  const startTimer = ()=>{
+    const intervalId = setInterval(timer,1000);
+    setIntervalId(intervalId);
+    
+    function timer(){
+      setCountDown((latestCountDown) => {
+        if(latestCountDown === 1){
+          setTestEnd(true);
+          clearInterval(intervalId);
+          return 0;
+        }
+        return latestCountDown-1;
+      });
+    }
+  
+}
+
+  const resetTest = () =>{
+    setCountDown(testTime);
+    setcurrentWordIndex(0);
+    setcurrentCharacterIndex(0);
+    setTestStart(false);
+    setTestEnd(false);
+    setWordsArray(generate(50));
+    resetWordSpanRefClassName();
+    focusInput()
+    clearInterval(intervalId);
+  }
+
+  const resetWordSpanRefClassName = ()=>{
+    wordsSpanRef.map(i=> Array.from(i.current.childNodes).map(j=> j.className=''));
+    wordsSpanRef[0].current.childNodes[0].className = 'current'
+  }
+
   const handleUserInput = (e) => {
+
+    if(!testStart){
+      startTimer();
+      setTestStart(true);
+    }
+
+
     const allCurrChars = wordsSpanRef[currentWordIndex].current.childNodes;
 
     if(e.keyCode === SPACEBAR){
@@ -96,13 +143,15 @@ const TypingBox = () => {
   }, []);
 
   useEffect(()=>{
+    resetTest()
     setCountDown(testTime);
+    
   },[testTime])
 
   return (
     <div>
       <UpperMenu countDown={countDown}/>
-      <div className="type-box" onClick={focusInput}>
+    {testEnd ? <h1>TEST OVER !! </h1> :  <div className="type-box" onClick={focusInput}>
         <div className="words">
           {wordsArray.map((words, index) => (
             <span className="word" ref={wordsSpanRef[index]}>
@@ -112,7 +161,7 @@ const TypingBox = () => {
             </span>
           ))}
         </div>
-      </div>
+      </div> }
       <input
         type="text"
         ref={inputRef}
