@@ -5,9 +5,9 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 body{
-  background:black;
-  color:white;
-  margine:0;
+  background:${({theme}) => theme.background};
+  color:${({theme}) => theme.textColor};
+  margin:0;
   padding:0;
   transition: all 0.25s linear;
 }
@@ -31,12 +31,14 @@ body{
   margin-left:auto;
   margin-right:auto;
   overflow:hidden
+  
 }
 
 .words{
 display:flex;
   flex-wrap:wrap;
   font-size:32px;
+  color: ${({theme}) => theme.typeBoxColor}
   
 }
 
@@ -104,6 +106,15 @@ opacity:0;
 .time-mode:hover{
 color:green;
 cursor:pointer;
+}
+
+
+.footer{
+  width: 1000px;
+  display:flex;
+  justify-content:space-between;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 `;
